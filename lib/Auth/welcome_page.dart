@@ -17,7 +17,6 @@ class _WelcomePageState extends State<WelcomePage> {
     return ModalProgressHUD(
       inAsyncCall: signLoading,
       child: Scaffold(
-        backgroundColor: Colors.white,
         body: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -31,8 +30,8 @@ class _WelcomePageState extends State<WelcomePage> {
               'Welcome',
               style: TextStyle(
                 fontSize: 35,
-                fontWeight: FontWeight.w400,
-                color: Colors.black,
+                fontWeight: FontWeight.w500,
+                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 20),
@@ -40,8 +39,8 @@ class _WelcomePageState extends State<WelcomePage> {
               'In TEXTME APP ',
               style: TextStyle(
                 fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                color: Colors.black87,
               ),
             ),
             const SizedBox(height: 20),
@@ -67,14 +66,14 @@ class _WelcomePageState extends State<WelcomePage> {
                       'Skip',
                       style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black45,
+                        color: Colors.black87,
                       ),
                     ),
                     SizedBox(width: 7),
                     Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 17,
-                      color: Colors.black45,
+                      color: Colors.black87,
                     )
                   ],
                 ),

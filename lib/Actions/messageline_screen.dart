@@ -33,14 +33,14 @@ class MessageLine extends StatelessWidget {
                     bottomLeft: Radius.circular(15),
                     bottomRight: Radius.circular(15),
                   ),
-            color: isMe! ? Colors.orange[500] : Colors.blueGrey[700],
+            color: isMe! ? Colors.orange[300] : Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Text(
                 '$text',
                 style: const TextStyle(
                     fontSize: 15,
-                    color: Colors.white,
+                    color: Colors.black54,
                     fontWeight: FontWeight.bold),
               ),
             ),

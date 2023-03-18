@@ -15,211 +15,210 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   final _auth = FirebaseAuth.instance;
-  final _googleSignIn = GoogleSignIn();
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   late String email;
   late String password;
+  late String userName;
+  late String profilePicture;
 
   bool signLoading = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         body: ModalProgressHUD(
-          inAsyncCall: signLoading,
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: SafeArea(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 200,
-                      child: Image.asset(
-                        'images/welcome.png',
+      inAsyncCall: signLoading,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SafeArea(
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+              height: 200,
+              child: Image.asset(
+                'images/welcome.png',
+              ),
+            ),
+            const SizedBox(height: 10),
+            Form(
+              child: Column(children: [
+                TextFormField(
+                  onChanged: (value) {
+                    email = value;
+                  },
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: const InputDecoration(
+                    hintText: 'email',
+                    prefixIcon: Icon(Icons.supervised_user_circle_sharp),
+                    contentPadding:
+                        EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  onChanged: (value) {
+                    password = value;
+                  },
+                  obscureText: true,
+                  keyboardType: TextInputType.visiblePassword,
+                  decoration: const InputDecoration(
+                    hintText: 'password',
+                    prefixIcon: Icon(Icons.password),
+                    contentPadding:
+                        EdgeInsets.only(top: 10, right: 20, left: 20),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                    ),
+                  ),
+                ),
+                Row(children: [
+                  const SizedBox(width: 15),
+                  const Text(
+                    "Don't have an account ?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('signup');
+                    },
+                    child: const Text(
+                      'Sign up',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    Form(
-                      child: Column(children: [
-                        TextFormField(
-                          onChanged: (value) {
-                            email = value;
-                          },
-                          keyboardType: TextInputType.emailAddress,
-                          decoration: const InputDecoration(
-                            hintText: 'email',
-                            prefixIcon:
-                                Icon(Icons.supervised_user_circle_sharp),
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 10, horizontal: 20),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                            ),
-                          ),
+                  )
+                ]),
+              ]),
+            ),
+            ButtonLS(
+              title: 'Log in',
+              onPressed: () async {
+                setState(() {
+                  signLoading = true;
+                });
+                try {
+                  await _auth.signInWithEmailAndPassword(
+                      email: email, password: password);
+                  Navigator.of(context).pushReplacementNamed('homechatscreen');
+                  setState(() {
+                    signLoading = false;
+                  });
+                } catch (e) {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                        const SizedBox(height: 10),
-                        TextFormField(
-                          onChanged: (value) {
-                            password = value;
-                          },
-                          obscureText: true,
-                          keyboardType: TextInputType.visiblePassword,
-                          decoration: const InputDecoration(
-                            hintText: 'password',
-                            prefixIcon: Icon(Icons.password),
-                            contentPadding:
-                                EdgeInsets.only(top: 10, right: 20, left: 20),
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                            ),
-                          ),
-                        ),
-                        Row(children: [
-                          const SizedBox(width: 15),
-                          const Text(
-                            "Don't have an account ?",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        actions: [
                           TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('signup');
-                            },
-                            child: const Text(
-                              'Sign up',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
+                              onPressed: () {
+                                setState(() {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('login');
+                                  signLoading = false;
+                                });
+                              },
+                              child: const Text("Cancel")),
+                        ],
+                        title: const Text("Error"),
+                        content: Text(
+                          '$e',
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Colors.red,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+              },
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'Or connect using',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black45,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () async {
+                    setState(() {
+                      signLoading = true;
+                    });
+                    try {
+                      await _googleSignIn.signIn().then((value) {
+                        userName = value!.displayName!;
+                        profilePicture = value.photoUrl!;
+                        email = value.email;
+                        password = value.id;
+                      });
+
+                      Navigator.of(context)
+                          .pushReplacementNamed('homechatscreen');
+                      //arguments: {
+                      // 'name': userName,
+                      // 'picture': profilePicture,
+                      //'email': email}
+
+                      setState(() {
+                        signLoading = false;
+                      });
+                    } catch (e) {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      Navigator.of(context)
+                                          .pushReplacementNamed('login');
+                                      signLoading = false;
+                                    });
+                                  },
+                                  child: const Text("Cancel")),
+                            ],
+                            title: const Text("Error"),
+                            content: Text(
+                              '$e',
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.red,
                               ),
                             ),
-                          )
-                        ]),
-                      ]),
-                    ),
-                    ButtonLS(
-                      title: 'Log in',
-                      onPressed: () async {
-                        setState(() {
-                          signLoading = true;
-                        });
-                        try {
-                          await _auth.signInWithEmailAndPassword(
-                              email: email, password: password);
-
-                          Navigator.of(context)
-                              .pushReplacementNamed('chatscreen');
-
-                          setState(() {
-                            signLoading = false;
-                          });
-                        } catch (e) {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15)),
-                                ),
-                                actions: [
-                                  TextButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          Navigator.of(context)
-                                              .pushReplacementNamed('login');
-                                          signLoading = false;
-                                        });
-                                      },
-                                      child: const Text("Cancel")),
-                                ],
-                                title: const Text("Error"),
-                                content: Text(
-                                  '$e',
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.red,
-                                  ),
-                                ),
-                              );
-                            },
                           );
-                        }
-                      },
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'Or connect using',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black45,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        TextButton(
-                          onPressed: () async {
-                            setState(() {
-                              signLoading = true;
-                            });
-                            try {
-                              GoogleSignInAccount? googleSignInAccount =
-                                  await _googleSignIn.signIn();
-                              Navigator.of(context)
-                                  .pushReplacementNamed('chatscreen');
-                              setState(() {
-                                signLoading = false;
-                              });
-                            } catch (e) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(15)),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      'login');
-                                              signLoading = false;
-                                            });
-                                          },
-                                          child: const Text("Cancel")),
-                                    ],
-                                    title: const Text("Error"),
-                                    content: Text(
-                                      '$e',
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        color: Colors.red,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            }
-                          },
-                          child: const Text(
-                            'Google',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
+                        },
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'Google',
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ));
+          ]),
+        ),
+      ),
+    ));
   }
 }

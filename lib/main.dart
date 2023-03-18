@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:text_me/Actions/chat_screen.dart';
+import 'package:text_me/Actions/home_chat_screen.dart';
 import 'package:text_me/Auth/welcome_page.dart';
 import 'package:text_me/Auth/login_screen.dart';
 import 'package:text_me/Auth/signup_screan.dart';
@@ -19,13 +20,20 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: const WelcomePage(),
-      initialRoute: _auth.currentUser != null ? 'chatscreen' : 'welcomePage',
+      //home: const LogIn(),
+      initialRoute:
+          _auth.currentUser != null ? 'homechatscreen' : 'welcomePage',
+      theme: ThemeData(
+        useMaterial3: true,
+        primaryColor: Colors.white70,
+        scaffoldBackgroundColor: Colors.white,
+      ),
       routes: {
         'welcomePage': (context) => const WelcomePage(),
         'signup': (context) => const SignUp(),
         'login': (context) => const LogIn(),
         'chatscreen': (context) => const ChatScreen(),
+        'homechatscreen': (context) => const HomeChatScreen(),
       },
     );
   }

@@ -9,7 +9,7 @@ class ButtonLS extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 7,
-      color: Colors.orange[500],
+      color: Colors.orange[700],
       borderRadius: BorderRadius.circular(15),
       child: MaterialButton(
         onPressed: onPressed,
