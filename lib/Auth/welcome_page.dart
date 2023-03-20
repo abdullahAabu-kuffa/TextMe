@@ -19,9 +19,9 @@ class _WelcomePageState extends State<WelcomePage> {
       child: Scaffold(
         body: SafeArea(
             child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            const SizedBox(height: 20),
+            const SizedBox(height: 80),
             Image.asset(
               'images/welcome_image.png',
             ),

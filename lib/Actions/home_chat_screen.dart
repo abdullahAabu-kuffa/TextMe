@@ -64,33 +64,29 @@ class _HomeChatScreenState extends State<HomeChatScreen> {
                 icon: const Icon(Icons.more_vert, color: Colors.white),
               )
             ],
-            bottom: const TabBar(indicatorColor: Colors.white, tabs: [
-              Tab(
-                child: Text(
-                  'Chats',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold, color: Colors.white),
-                ),
-              ),
-              Tab(
-                child: Text('Status',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
-              ),
-              Tab(
-                child: Text('Calls',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.white)),
-              ),
-            ]),
+            bottom: const TabBar(
+                indicatorColor: Colors.white,
+                unselectedLabelColor: Colors.white70,
+                labelColor: Colors.white,
+                tabs: [
+                  Tab(
+                    text: 'Chats',
+                  ),
+                  Tab(
+                    text: 'Status',
+                  ),
+                  Tab(
+                    text: 'Calls',
+                  ),
+                ]),
           ),
           drawer: Drawer(
             child: Column(children: [
               UserAccountsDrawerHeader(
                 currentAccountPicture: const CircleAvatar(
-                  backgroundImage: AssetImage('images/welcome.png'),
+                  backgroundImage: AssetImage('images/me.png'),
                 ),
-                accountName: Text('${signedUser.displayName}'),
+                accountName: const Text('Abdullah A.Abu-kuffa'),
                 accountEmail: Text('${signedUser.email}'),
                 decoration: BoxDecoration(
                   color: Colors.orange[700],

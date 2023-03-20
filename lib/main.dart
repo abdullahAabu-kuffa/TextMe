@@ -20,12 +20,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      //home: const LogIn(),
+      //home: const WelcomePage(),
       initialRoute:
           _auth.currentUser != null ? 'homechatscreen' : 'welcomePage',
       theme: ThemeData(
-        useMaterial3: true,
-        primaryColor: Colors.white70,
+        // useMaterial3: true,
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
